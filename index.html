@@ -2,104 +2,165 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Keerz Hub</title>
+<title>KeerzHub</title>
 
 <style>
-body {
+* {
     margin: 0;
-    font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #3a8dde, #6dd5fa);
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+body {
+    background: #050505;
     color: white;
     text-align: center;
 }
 
+/* LOADER */
+#loader {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: #000;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+#loader h1 {
+    font-size: 65px;
+    letter-spacing: 6px;
+    color: #00f0ff;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 10px #00f0ff; }
+    to { text-shadow: 0 0 35px #00f0ff, 0 0 60px #0072ff; }
+}
+
+/* MAIN */
+#main {
+    display: none;
+    padding-top: 60px;
+}
+
 /* TITLE */
-h1 {
-    margin-top: 40px;
-    font-size: 30px;
-    letter-spacing: 2px;
+.title {
+    font-size: 22px;
+    letter-spacing: 3px;
+    margin-bottom: 50px;
+    opacity: 0.8;
 }
 
 /* CARD */
 .container {
     display: flex;
     justify-content: center;
-    margin-top: 50px;
 }
 
 .card {
-    background: rgba(255,255,255,0.1);
-    backdrop-filter: blur(10px);
-    padding: 25px;
+    background: rgba(255,255,255,0.05);
     border-radius: 20px;
-    width: 220px;
-    cursor: pointer;
+    padding: 20px;
+    width: 260px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 0 40px rgba(0,0,0,0.8);
     transition: 0.3s;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    cursor: pointer;
 }
 
 .card:hover {
-    transform: scale(1.05);
+    transform: scale(1.08);
+    box-shadow: 0 0 25px #00f0ff;
 }
 
 .card img {
-    width: 150px;
-    border-radius: 15px;
+    width: 200px;
+    border-radius: 12px;
     margin-bottom: 10px;
 }
 
 /* SCRIPT BOX */
 .script-box {
-    margin-top: 40px;
+    margin-top: 50px;
     display: none;
+    animation: fadeIn 0.5s ease;
 }
 
 textarea {
     width: 80%;
-    height: 120px;
+    height: 140px;
+    background: #111;
+    color: #00f0ff;
+    border: 1px solid #222;
     border-radius: 10px;
-    border: none;
     padding: 10px;
-    font-size: 14px;
+    font-size: 13px;
 }
 
 /* BUTTON */
 button {
-    margin-top: 10px;
-    padding: 10px 20px;
-    border: none;
+    margin-top: 12px;
+    padding: 10px 25px;
     border-radius: 10px;
-    background: #00c6ff;
-    color: white;
+    border: none;
+    background: #00f0ff;
+    color: black;
+    font-weight: bold;
     cursor: pointer;
+    transition: 0.2s;
 }
 
 button:hover {
     background: #0072ff;
+    color: white;
+}
+
+/* ANIMATION */
+@keyframes fadeIn {
+    from {opacity: 0;}
+    to {opacity: 1;}
 }
 </style>
-
 </head>
 
 <body>
 
-<h1>🎮 TIPSY HUB - CATCH AND TAME</h1>
+<!-- LOADING -->
+<div id="loader">
+    <h1>KEERZHUB</h1>
+</div>
 
-<div class="container">
-    <div class="card" onclick="showScript()">
-        <img src="catchandtame.png">
-        <h3>Catch and Tame</h3>
+<!-- MAIN -->
+<div id="main">
+    <div class="title">SELECT GAME TO GET SCRIPT</div>
+
+    <div class="container">
+        <div class="card" onclick="showScript()">
+            <img src="https://tr.rbxcdn.com/180DAY-9e9c2d3bb9c6b3e3e6b7cfd3f9d4c2a4/768/432/Image/Webp/noFilter">
+            <h3>Catch and Tame</h3>
+        </div>
+    </div>
+
+    <div class="script-box" id="scriptBox">
+        <h2>Script</h2>
+        <textarea id="scriptText" readonly></textarea><br>
+        <button onclick="copyScript()">COPY</button>
     </div>
 </div>
 
-<div class="script-box" id="scriptBox">
-    <h2>Your Script</h2>
-    <textarea id="scriptText" readonly></textarea><br>
-    <button onclick="copyScript()">Copy Script</button>
-</div>
-
 <script>
-const script = "loadstring(game:HttpGet("https://raw.githubusercontent.com/oxbahsw/keerzhub/refs/heads/main/loader.lua"))()";
+// LOADING TIME
+setTimeout(() => {
+    document.getElementById("loader").style.display = "none";
+    document.getElementById("main").style.display = "block";
+}, 2000);
+
+// PUT YOUR SCRIPT HERE
+const script = `loadstring(game:HttpGet("https://raw.githubusercontent.com/oxbahsw/keerzhub/refs/heads/main/loader.lua"))()`;
 
 function showScript() {
     document.getElementById("scriptBox").style.display = "block";
@@ -107,7 +168,7 @@ function showScript() {
 }
 
 function copyScript() {
-    const text = document.getElementById("scriptText");
+    let text = document.getElementById("scriptText");
     text.select();
     document.execCommand("copy");
     alert("Copied!");
